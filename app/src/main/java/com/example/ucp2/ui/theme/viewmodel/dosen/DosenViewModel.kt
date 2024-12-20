@@ -30,4 +30,29 @@ class DosenViewModel(private val repositoryDosen: RepositoryDosen) : ViewModel()
         return errorState.isValid()
     }
 
+    //menyimpan data ke repository
+    fun saveData() {
+        val currentEvent = uiState.dosenEvent
+        if (validateFields()) {
+            viewModelScope.launch {
+                try {
+                    repositoryDosen.insertDosen(currentEvent.toDosenEntity())
+                    uiState = uiState.copy(
+                        snackBarMessage = "Data Berhasil Disimpan",
+                        dosenEvent = DosenEvent(), // reset input form
+                        isEntryValid = FormErrorState() // reset error state
+                    )
+                } catch (e: Exception) {
+                    uiState = uiState.copy(
+                        snackBarMessage = "Data Gagal Disimpan"
+                    )
+                }
+            }
+        } else {
+            uiState = uiState.copy(
+                snackBarMessage = "Data tidak valid. Periksa kembali data anda"
+            )
+        }
+    }
+
     
