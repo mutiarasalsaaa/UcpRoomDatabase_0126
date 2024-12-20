@@ -88,3 +88,82 @@ fun HomeDosenView (
     }
 }
 
+@Composable
+fun BodyHomeDosenView (
+    homeUiState: HomeUiState,
+    onClick: (String) -> Unit = { },
+    modifier: Modifier = Modifier
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() } // Snackbar state
+    when {
+        homeUiState.isLoading -> {
+            // Menampilkan indikator loading
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        homeUiState.isError -> {
+            // Menampilkan pesan error
+            LaunchedEffect(homeUiState.errorMessage) {
+                homeUiState.errorMessage?.let { message ->
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(message) // Tampilkan Snackbar
+                    }
+                }
+            }
+        }
+
+        homeUiState.listDosen.isEmpty() -> {
+            // Menampilkan pesan jika data kosong
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Tidak ada data dosen.",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+
+        else -> {
+            // Menampilkan daftar dosen
+            ListDosen(
+                listDosen = homeUiState.listDosen,
+                onClick = {
+                    onClick(it)
+                },
+                modifier = modifier
+            )
+        }
+    }
+}
+
+@Composable
+fun ListDosen (
+    listDosen: List<Dosen>,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = { }
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(
+            items = listDosen,
+            itemContent = { dosen ->
+                CardDosen(
+                    dosen = dosen,
+                    onClick = { onClick(dosen.nidn) }
+                )
+            }
+        )
+    }
+}
+
