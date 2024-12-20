@@ -89,3 +89,62 @@ fun HomeMatakuliahView(
     }
 }
 
+@Composable
+fun BodyHomeMatakuliahView(
+    homeUiState: HomeMatakuliahUiState,
+    onClick: (String) -> Unit = { },
+    modifier: Modifier = Modifier
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() } // Snackbar state
+    when {
+        homeUiState.isLoading -> {
+            // Menampilkan indikator loading
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        homeUiState.isError -> {
+            // Menampilkan pesan error
+            LaunchedEffect(homeUiState.errorMessage) {
+                homeUiState.errorMessage?.let { message ->
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(message) // Tampilkan Snackbar
+                    }
+                }
+            }
+        }
+
+        homeUiState.listMatakuliah.isEmpty() -> {
+            // Menampilkan pesan jika data kosong
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Tidak ada data mata kuliah.",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+
+        else -> {
+            // Menampilkan daftar mata kuliah
+            ListMatakuliah(
+                listMatakuliah = homeUiState.listMatakuliah,
+                onClick = {
+                    onClick(it)
+                    println(it)
+                },
+                modifier = modifier
+            )
+        }
+    }
+}
+
