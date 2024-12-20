@@ -79,3 +79,77 @@ fun InsertDosenView(
     }
 }
 
+@Composable
+fun InsertBodyDosen(
+    modifier: Modifier = Modifier,
+    uiState: DosenUIState,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        FormDosen(
+            dosenEvent = uiState.dosenEvent,
+            errorState = uiState.isEntryValid,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+fun FormDosen(
+    dosenEvent: DosenEvent = DosenEvent(),
+    errorState: FormErrorState = FormErrorState(),
+    modifier: Modifier = Modifier
+) {
+    val jenisKelamin = listOf("Laki-laki", "Perempuan")
+
+    Column(modifier = modifier.fillMaxWidth()) {
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = dosenEvent.nama,
+            onValueChange = {}, // tidak bisa diubah
+            label = { Text("Nama") },
+            isError = errorState.nama != null,
+            placeholder = { Text("Masukan nama") },
+        )
+        Text(
+            text = errorState.nama ?: "",
+            color = Color.Red
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = dosenEvent.nidn,
+            onValueChange = {}, // tidak bisa diubah
+            label = { Text("NIDN") },
+            isError = errorState.nidn != null,
+            placeholder = { Text("Masukan NIDN") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Text(
+            text = errorState.nidn ?: "",
+            color = Color.Red
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Jenis Kelamin")
+        Row(modifier = Modifier.fillMaxWidth()) {
+            jenisKelamin.forEach { jk ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    RadioButton(
+                        selected = dosenEvent.jenisKelamin == jk,
+                        onClick = {} // tidak bisa diubah
+                    )
+                    Text(
+                        text = jk,
+                    )
+                }
+            }
+        }
+    }
+}
