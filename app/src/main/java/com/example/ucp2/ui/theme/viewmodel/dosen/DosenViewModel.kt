@@ -55,4 +55,40 @@ class DosenViewModel(private val repositoryDosen: RepositoryDosen) : ViewModel()
         }
     }
 
-    
+    //reset pesan snackbar setelah ditampilkan
+    fun resetSnackBarMessage() {
+        uiState = uiState.copy(
+            snackBarMessage = null
+        )
+    }
+}
+
+data class DosenUIState(
+    val dosenEvent: DosenEvent = DosenEvent(),
+    val isEntryValid: FormErrorState = FormErrorState(),
+    val snackBarMessage: String? = null,
+)
+
+data class FormErrorState(
+    val nidn: String? = null,
+    val nama: String? = null,
+    val jenisKelamin: String? = null,
+) {
+    fun isValid(): Boolean {
+        return nidn == null && nama == null && jenisKelamin == null
+    }
+}
+
+// menyimpan input form ke dalam entity
+fun DosenEvent.toDosenEntity(): Dosen = Dosen(
+    nidn = nidn,
+    nama = nama,
+    jenisKelamin = jenisKelamin
+)
+
+// data class variabel yang menyimpan data input form
+data class DosenEvent(
+    val nidn: String = "",
+    val nama: String = "",
+    val jenisKelamin: String = "",
+)
