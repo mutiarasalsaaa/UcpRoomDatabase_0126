@@ -4,45 +4,48 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ucp2.Data.entity.Matakuliah
 import com.example.ucp2.repository.RepositoryMatakuliah
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 
-class HomeMatakuliahViewModel(
+class HomeMatakuliahViewModel (
     private val repositoryMatakuliah: RepositoryMatakuliah
-) : ViewModel() {
-
-    private val _homeMatakuliahUiState = MutableStateFlow(HomeMatakuliahUiState())
-    val homeMatakuliahUiState: StateFlow<HomeMatakuliahUiState> get() = _homeMatakuliahUiState
-
-    init {
-        loadMatakuliah()
+) : ViewModel(){
+    val homeUiState: StateFlow<HomeUiState> = repositoryMatakuliah.getAllMatakuliah().filterNotNull().map {
+        HomeUiState(
+            listMatakuliah = it.toList(),
+            isLoading = false,
+        )
     }
-
-    private fun loadMatakuliah() {
-        _homeMatakuliahUiState.value = HomeMatakuliahUiState(isLoading = true)
-        viewModelScope.launch {
-            try {
-                val listMatakuliah = repositoryMatakuliah.getAllMatakuliah()
-                _homeMatakuliahUiState.value = HomeMatakuliahUiState(
-                    listMatakuliah = listMatakuliah,
-                    isLoading = false,
-                    isError = false
-                )
-            } catch (e: Exception) {
-                _homeMatakuliahUiState.value = HomeMatakuliahUiState(
+        .onStart {
+            emit(HomeUiState(isLoading = true))
+            delay(900)
+        }
+        .catch {
+            emit(
+                HomeUiState(
                     isLoading = false,
                     isError = true,
-                    errorMessage = "Gagal memuat data mata kuliah."
+                    errorMessage = it.message ?: "Terjadi kesalahan"
                 )
-            }
+            )
         }
-    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(500),
+            initialValue = HomeUiState(
+                isLoading = true
+            )
+        )
 }
-
-data class HomeMatakuliahUiState(
-    val listMatakuliah: List<Matakuliah> = emptyList(),
+data class HomeUiState(
+    val listMatakuliah: List<Matakuliah> = listOf(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String = " "
 )

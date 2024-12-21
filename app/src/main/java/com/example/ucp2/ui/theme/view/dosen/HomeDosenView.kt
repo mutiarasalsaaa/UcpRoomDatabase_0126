@@ -36,12 +36,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.meet10.ui.viewmodel.PenyediaDosenViewModel
 import com.example.ucp2.Data.entity.Dosen
 import com.example.ucp2.ui.theme.viewmodel.dosen.HomeDosenViewModel
 import com.example.ucp2.ui.theme.viewmodel.dosen.HomeUiState
+import com.example.ucp2.ui.viewmodel.PenyediaDosenViewModel
 import kotlinx.coroutines.launch
-
+import com.example.ucp2.ui.theme.view.dosen.HomeDosenView
 
 @Composable
 fun HomeDosenView (

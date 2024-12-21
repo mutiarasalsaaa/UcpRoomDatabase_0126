@@ -1,5 +1,6 @@
 package com.example.ucp2.ui.theme.view.matakuliah
 
+import MatakuliahEvent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,10 +28,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.meet10.ui.viewmodel.PenyediaDosenViewModel
 import com.example.ucp2.ui.theme.customwidget.TopAppBar
 import com.example.ucp2.ui.theme.navigation.AlamatNavigasi
+import com.example.ucp2.ui.theme.viewmodel.matakuliah.FormErrorState
+import com.example.ucp2.ui.theme.viewmodel.matakuliah.MatakuliahUIState
 import com.example.ucp2.ui.theme.viewmodel.matakuliah.MatakuliahViewModel
+import com.example.ucp2.ui.viewmodel.PenyediaDosenViewModel
 import kotlinx.coroutines.launch
 
 
@@ -103,7 +106,7 @@ fun InsertBodyMatkul(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         FormMatakuliah(
-            matakuliahEvent = uiState.matkulEvent,
+            matakuliahEvent = uiState.matakuliahEvent,
             onValueChange = onValueChange,
             errorState = uiState.isEntryValid,
             modifier = Modifier.fillMaxWidth()

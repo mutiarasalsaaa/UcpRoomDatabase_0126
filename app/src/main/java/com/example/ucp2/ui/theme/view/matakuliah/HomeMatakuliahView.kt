@@ -35,11 +35,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.meet10.ui.viewmodel.PenyediaDosenViewModel
 import com.example.ucp2.Data.entity.Matakuliah
 import com.example.ucp2.ui.theme.customwidget.TopAppBar
-import com.example.ucp2.ui.theme.viewmodel.matakuliah.HomeMatakuliahUiState
 import com.example.ucp2.ui.theme.viewmodel.matakuliah.HomeMatakuliahViewModel
+import com.example.ucp2.ui.theme.viewmodel.matakuliah.HomeUiState
+import com.example.ucp2.ui.viewmodel.PenyediaDosenViewModel
 
 import kotlinx.coroutines.launch
 
@@ -48,6 +48,7 @@ fun HomeMatakuliahView(
     viewModel: HomeMatakuliahViewModel = viewModel(factory = PenyediaDosenViewModel.Factory),
     onAddMatakuliah: () -> Unit = { },
     onDetailClick: (String) -> Unit = { },
+    onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -76,7 +77,7 @@ fun HomeMatakuliahView(
             }
         }
     ) { innerPadding ->
-        val homeUiState by viewModel.homeMatakuliahUiState.collectAsState()
+        val homeUiState by viewModel.homeUiState.collectAsState()
 
         BodyHomeMatakuliahView(
             homeUiState = homeUiState,
@@ -91,7 +92,7 @@ fun HomeMatakuliahView(
 
 @Composable
 fun BodyHomeMatakuliahView(
-    homeUiState: HomeMatakuliahUiState,
+    homeUiState: HomeUiState,
     onClick: (String) -> Unit = { },
     modifier: Modifier = Modifier
 ) {

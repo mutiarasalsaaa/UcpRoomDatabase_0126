@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.ucp2"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.ucp2"

@@ -47,3 +47,9 @@ class HomeDosenViewModel(
             )
         )
 }
+data class HomeUiState(
+    val listDosen: List<Dosen> = listOf(),
+    val isLoading: Boolean = false,
+    val isError: Boolean = false,
+    val errorMessage: String = " "
+)

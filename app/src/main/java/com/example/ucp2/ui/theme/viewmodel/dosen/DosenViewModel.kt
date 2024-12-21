@@ -24,7 +24,7 @@ class DosenViewModel(private val repositoryDosen: RepositoryDosen) : ViewModel()
         val errorState = FormErrorState(
             nidn = if (event.nidn.isNotEmpty()) null else "NIDN tidak boleh kosong",
             nama = if (event.nama.isNotEmpty()) null else "Nama tidak boleh kosong",
-            jenisKelamin = if (event.jenisKelamin.isNotEmpty()) null else "Jenis Kelamin tidak boleh kosong",
+            jenisKelamin = if (event.jenisKelamin.isNotEmpty()) null else "jenis kelamin tidak boleh kosong",
         )
         uiState = uiState.copy(isEntryValid = errorState)
         return errorState.isValid()
@@ -73,8 +73,8 @@ data class FormErrorState(
     val nidn: String? = null,
     val nama: String? = null,
     val jenisKelamin: String? = null,
-) {
-    fun isValid(): Boolean {
+){
+    fun isValid(): Boolean{
         return nidn == null && nama == null && jenisKelamin == null
     }
 }
@@ -92,3 +92,6 @@ data class DosenEvent(
     val nama: String = "",
     val jenisKelamin: String = "",
 )
+
+
+

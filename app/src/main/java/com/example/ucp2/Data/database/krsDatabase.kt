@@ -6,28 +6,26 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.ucp2.Data.dao.dosenDAO
 import com.example.ucp2.Data.dao.matakuliahDAO
-import com.example.ucp2.Data.entity.dosen
-import com.example.ucp2.Data.entity.matakuliah
+import com.example.ucp2.Data.entity.Dosen
+import com.example.ucp2.Data.entity.Matakuliah
 
-// Mendefinisikan database dengan tabel Dosen dan MataKuliah
-@Database(entities = [dosen::class, matakuliah::class], version = 1, exportSchema = false)
-abstract class UcpDatabase : RoomDatabase() {
-
-    // Mendefinisikan fungsi untuk mengakses data Dosen dan MataKuliah
+@Database(entities = [Dosen::class, Matakuliah::class], version = 2, exportSchema = false)
+abstract class krsDatabase : RoomDatabase() {
     abstract fun dosenDao(): dosenDAO
-    abstract fun mataKuliahDao(): matakuliahDAO
+    abstract fun matakuliahDao(): matakuliahDAO
 
     companion object {
-        @Volatile // Memastikan bahwa nilai variabel instance selalu sama di semua thread
-        private var Instance: UcpDatabase? = null
+        @Volatile
+        private var Instance: krsDatabase? = null
 
-        fun getDatabase(context: Context): UcpDatabase {
+        fun getDatabase(context: Context): krsDatabase {
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(
-                    context.applicationContext,
-                    UcpDatabase::class.java, // Class database
-                    "UcpDatabase" // Nama database
+                    context,
+                    krsDatabase::class.java,
+                    "krsDatabase"
                 )
+                    .fallbackToDestructiveMigration()
                     .build().also { Instance = it }
             }
         }

@@ -1,33 +1,25 @@
 package com.example.ucp2.Data.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
-import com.example.ucp2.Data.entity.dosen
-import com.example.ucp2.Data.entity.matakuliah
+import androidx.room.*
+import com.example.ucp2.Data.entity.Matakuliah
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface matakuliahDAO {
+
     @Insert
-    suspend fun insertmatakuliahDAO(
-        matakuliah: matakuliah
-    )
+    suspend fun insertmatakuliahDAO(matakuliah: Matakuliah)
+
     @Query("SELECT * FROM matakuliah ORDER BY kode ASC")
-    fun getAllmatakuliah () : Flow<List<matakuliah>>
+    fun getAllmatakuliah(): Flow<List<Matakuliah>>
 
-    @Query("SELECT * FROM matakuliah WHERE nama= :nama")
-    fun getmatakuliah(nama: String) : Flow<matakuliah>
-
-    @Delete
-    suspend fun deletematakuliah(matakuliah: matakuliah)
+    @Query("SELECT * FROM matakuliah WHERE kode = :kode")
+    fun getMataKuliahByKode(kode: String): Flow<Matakuliah>
 
     @Update
-    suspend fun updatematakuliah (matakuliah: matakuliah)
+    suspend fun updatematakuliah(matakuliah: Matakuliah)
+
+    @Delete
+    suspend fun deletematakuliah(matakuliah: Matakuliah)
 
 }
-
-}
-

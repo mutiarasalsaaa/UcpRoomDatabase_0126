@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "dosen")
-data class dosen(
+data class Dosen(
     @PrimaryKey
-    val Nidn: String,
+    val nidn: String,
     val nama: String,
     val jenisKelamin: String,
 )

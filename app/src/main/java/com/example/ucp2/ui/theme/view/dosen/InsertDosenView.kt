@@ -25,14 +25,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.meet10.ui.viewmodel.PenyediaDosenViewModel
 import com.example.ucp2.ui.theme.customwidget.TopAppBar
 import com.example.ucp2.ui.theme.navigation.AlamatNavigasi
 import com.example.ucp2.ui.theme.viewmodel.dosen.DosenEvent
 import com.example.ucp2.ui.theme.viewmodel.dosen.DosenUIState
 import com.example.ucp2.ui.theme.viewmodel.dosen.DosenViewModel
 import com.example.ucp2.ui.theme.viewmodel.dosen.FormErrorState
+import com.example.ucp2.ui.viewmodel.PenyediaDosenViewModel
 import kotlinx.coroutines.launch
+
 
 object DestinasiInsertDosen : AlamatNavigasi {
     override val route: String = "insert_dosen"
@@ -41,6 +42,7 @@ object DestinasiInsertDosen : AlamatNavigasi {
 @Composable
 fun InsertDosenView(
     onBack: () -> Unit,
+    onNavigate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DosenViewModel = viewModel(factory = PenyediaDosenViewModel.Factory)
 ) {
